@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dff4ee">
+  <title>Shabil Trans — Sistem Akuntansi Travel</title>
+  <link rel="stylesheet" href="./styles.css?v=20261011-13">
+  <script src="./app.js?v=20261011-8" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="Shabil Trans beranda">
+      <span class="brand-mark">S</span>
+      <span><strong>Shabil Trans</strong><small>TRAVEL ACCOUNTING</small></span>
+    </a>
+    <div class="workspace-label">WORKSPACE</div>
+    <nav class="navigation" aria-label="Navigasi utama">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-icon">◫</span> Ringkasan</button>
+      <button class="nav-item" data-view="trips"><span class="nav-icon">↗</span> Perjalanan</button>
+      <button class="nav-item" data-view="transactions"><span class="nav-icon">⇄</span> Kas & biaya</button>
+      <button class="nav-item" data-view="contacts"><span class="nav-icon">♧</span> Pelanggan & driver</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-note"><span class="note-dot"></span><span><strong id="connection-title">Memeriksa penyimpanan</strong><small id="connection-detail">Menyiapkan aplikasi</small></span></div>
+      <div class="user-profile"><div class="avatar">A</div><span><strong>Administrator</strong><small>Pengelola usaha</small></span><span class="profile-menu">•••</span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="breadcrumb">Travel <span>/</span> <strong id="breadcrumb-title">Ringkasan</strong></div>
+      <div class="topbar-right"><span class="today" id="today-label"></span><span class="top-avatar">A</span></div>
+    </header>
+
+    <section class="view active" id="view-dashboard">
+      <div class="page-heading dashboard-heading">
+        <div class="hero-copy"><div class="eyebrow">PUSAT KENDALI SHABIL TRANS</div><h1>Perjalanan aman &amp; nyaman dengan Shabil Trans</h1><p>Pantau pendapatan sewa, operasional, dan posisi kas travel Anda dari satu tempat.</p><div class="hero-tags"><span>✦ Operasional terpantau</span><span>● Data tersimpan teratur</span></div></div>
+        <div class="hero-fleet" aria-label="Foto Toyota HiAce Premio dengan lapisan toska transparan">
+          <img class="fleet-photo" src="./images/hiace.jpg" alt="Toyota HiAce Premio putih">
+          <span class="fleet-caption"><i></i> SIAP MENGANTAR LEBIH NYAMAN</span>
+          <div class="fleet-credits" aria-label="Kredit foto">
+            <a href="https://commons.wikimedia.org/wiki/File:Toyota_HiAce_Premio_in_Melasti_Beach,_Bali_(25-03-2026).jpg" target="_blank" rel="noopener noreferrer">Hiace: Sulthan Naufal · CC BY-SA 4.0</a>
+          </div>
+        </div>
+        <button class="button button-primary" data-open="trip-modal"><span>＋</span> Perjalanan baru</button>
+      </div>
+      <div class="stat-grid">
+        <article class="stat-card stat-featured"><div class="stat-top"><span>Pendapatan sewa</span><span class="stat-icon mint">↗</span></div><div class="stat-value" id="stat-revenue">Rp0</div><div class="stat-foot"><span class="trend-dot"></span> Perjalanan selesai</div><div class="feature-decoration"></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Total penerimaan</span><span class="stat-icon green">↓</span></div><div class="stat-value" id="stat-incoming">Rp0</div><div class="stat-foot muted">DP & pelunasan pelanggan</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Biaya operasional</span><span class="stat-icon orange">↗</span></div><div class="stat-value" id="stat-expenses">Rp0</div><div class="stat-foot muted">Bensin, tol, parkir, makan</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Saldo kas & bank</span><span class="stat-icon blue">▤</span></div><div class="stat-value" id="stat-balance">Rp0</div><div class="stat-foot muted" id="stat-balance-note">Kas tunai + rekening</div></article>
+      </div>
+
+      <div class="dashboard-grid">
+        <section class="panel trip-panel">
+          <div class="panel-heading"><div><div class="eyebrow">AKTIVITAS USAHA</div><h2>Perjalanan terbaru</h2></div><button class="text-button" data-view="trips">Lihat semua <span>→</span></button></div>
+          <div class="table-wrap"><table><thead><tr><th>PERJALANAN</th><th>TANGGAL</th><th>STATUS</th><th class="align-right">NILAI SEWA</th></tr></thead><tbody id="recent-trips"></tbody></table></div>
+          <div class="empty-state hidden" id="recent-empty">Belum ada perjalanan. Tambahkan perjalanan pertama Anda.</div>
+        </section>
+        <section class="panel cash-panel">
+          <div class="panel-heading"><div><div class="eyebrow">ARUS TERBARU</div><h2>Aktivitas kas</h2></div><button class="icon-button" data-view="transactions" aria-label="Lihat transaksi">↗</button></div>
+          <div class="cash-list" id="recent-cash"></div>
+          <div class="empty-state hidden" id="cash-empty">Belum ada aktivitas kas.</div>
+        </section>
+      </div>
+      <div class="bottom-grid">
+        <section class="panel insight-panel"><div class="insight-icon">✦</div><div><div class="eyebrow">PENGINGAT PENTING</div><h3>Validasi biaya sebelum komisi</h3><p>Komisi driver dapat diselesaikan setelah perjalanan selesai dan semua biaya operasional divalidasi admin.</p></div><button class="text-button" data-view="transactions">Periksa biaya <span>→</span></button></section>
+        <section class="panel quick-panel"><div><div class="eyebrow">AKSES CEPAT</div><h3>Catat aktivitas</h3></div><div class="quick-actions"><button class="quick-action" data-open="transaction-modal"><span class="quick-icon lavender">＋</span><span>Catat transaksi</span></button><button class="quick-action" data-open="contact-modal"><span class="quick-icon peach">♧</span><span>Tambah kontak</span></button></div></section>
+      </div>
+    </section>
+
+    <section class="view" id="view-trips">
+      <div class="page-heading"><div><div class="eyebrow">OPERASIONAL</div><h1>Perjalanan</h1><p>Kelola pemesanan, pendapatan sewa, komisi driver, dan penyelesaian uang jalan.</p></div><button class="button button-primary" data-open="trip-modal"><span>＋</span> Perjalanan baru</button></div>
+      <section class="panel full-panel"><div class="panel-heading"><div><h2>Daftar perjalanan</h2><p class="panel-subtitle">Komisi default 10% dari pendapatan sewa bruto.</p></div><input class="search-input" id="trip-search" placeholder="Cari rute atau pelanggan..." aria-label="Cari perjalanan"></div>
+        <div class="table-wrap"><table><thead><tr><th>PERJALANAN</th><th>PELANGGAN / DRIVER</th><th>TANGGAL</th><th>STATUS</th><th>KOMISI</th><th class="align-right">NILAI SEWA</th><th>AKSI</th></tr></thead><tbody id="trips-table"></tbody></table></div><div class="empty-state hidden" id="trips-empty">Belum ada perjalanan.</div>
+      </section>
+    </section>
+
+    <section class="view" id="view-transactions">
+      <div class="page-heading"><div><div class="eyebrow">PENGELOLAAN KEUANGAN</div><h1>Kas & biaya</h1><p>Catat penerimaan, uang jalan, serta biaya perjalanan yang perlu divalidasi.</p></div><button class="button button-primary" data-open="transaction-modal"><span>＋</span> Catat transaksi</button></div>
+      <div class="transaction-summary"><article class="mini-stat"><span>Menunggu validasi</span><strong id="pending-count">0 biaya</strong><small>Biaya perjalanan perlu ditinjau</small></article><article class="mini-stat"><span>Kas tunai</span><strong id="cash-balance">Rp0</strong><small>Saldo kanal tunai</small></article><article class="mini-stat"><span>Rekening bank</span><strong id="bank-balance">Rp0</strong><small>Saldo kanal bank</small></article></div>
+      <section class="panel full-panel"><div class="panel-heading"><div><h2>Jurnal kas & biaya</h2><p class="panel-subtitle">Pengeluaran aktual perjalanan baru menjadi biaya setelah divalidasi.</p></div><select class="filter-select" id="transaction-filter"><option value="all">Semua aktivitas</option><option value="pending">Menunggu validasi</option><option value="validated">Tervalidasi</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>AKTIVITAS</th><th>PERJALANAN</th><th>TANGGAL</th><th>STATUS</th><th>METODE</th><th class="align-right">JUMLAH</th><th>AKSI</th></tr></thead><tbody id="transactions-table"></tbody></table></div><div class="empty-state hidden" id="transactions-empty">Belum ada aktivitas kas atau biaya.</div>
+      </section>
+    </section>
+
+    <section class="view" id="view-contacts">
+      <div class="page-heading"><div><div class="eyebrow">DATA MASTER</div><h1>Pelanggan & driver</h1><p>Daftar kontak usaha yang digunakan saat mencatat perjalanan.</p></div><button class="button button-primary" data-open="contact-modal"><span>＋</span> Tambah kontak</button></div>
+      <div class="contact-grid"><section class="panel full-panel"><div class="panel-heading"><div><h2>Pelanggan</h2><p class="panel-subtitle">Kontak pemesan jasa sewa.</p></div><span class="count-badge" id="customer-count">0</span></div><div id="customers-list" class="people-list"></div><div class="empty-state hidden" id="customers-empty">Belum ada pelanggan.</div></section><section class="panel full-panel"><div class="panel-heading"><div><h2>Driver</h2><p class="panel-subtitle">Driver dan persentase komisi yang berlaku.</p></div><span class="count-badge" id="driver-count">0</span></div><div id="drivers-list" class="people-list"></div><div class="empty-state hidden" id="drivers-empty">Belum ada driver.</div></section></div>
+    </section>
+    <footer class="footer"><span>Shabil Trans <span class="footer-dot">·</span> Sistem Akuntansi Travel</span><span>Komisi default driver <strong>10%</strong> <span class="footer-dot">·</span> Pendapatan diakui saat perjalanan selesai</span></footer>
+  </main>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+
+  <dialog class="modal" id="trip-modal"><form class="modal-card" id="trip-form"><input type="hidden" name="id">
+    <div class="modal-heading"><div><div class="eyebrow">OPERASIONAL</div><h2>Tambah perjalanan</h2></div><button type="button" class="close-button" data-close aria-label="Tutup">×</button></div>
+    <div class="field-group"><label for="trip-customer">Pelanggan</label><select name="customer_id" id="trip-customer" required></select><button class="inline-add" type="button" data-add-contact="customer">＋ Tambah pelanggan baru</button><span class="inline-contact hidden" id="quick-customer"><input id="quick-customer-name" placeholder="Nama pelanggan" aria-label="Nama pelanggan baru"><input id="quick-customer-phone" type="tel" placeholder="Nomor telepon (opsional)" aria-label="Nomor telepon pelanggan"><button class="button button-primary quick-save" type="button" data-save-contact="customer">Simpan pelanggan</button></span></div>
+    <div class="field-group"><label for="trip-driver">Driver</label><select name="driver_id" id="trip-driver" required></select><button class="inline-add" type="button" data-add-contact="driver">＋ Tambah driver baru</button><span class="inline-contact hidden" id="quick-driver"><input id="quick-driver-name" placeholder="Nama driver" aria-label="Nama driver baru"><input id="quick-driver-phone" type="tel" placeholder="Nomor telepon (opsional)" aria-label="Nomor telepon driver"><button class="button button-primary quick-save" type="button" data-save-contact="driver">Simpan driver</button></span></div>
+    <div class="form-row"><label>Kota asal<input name="origin" required placeholder="Contoh: Jakarta"></label><label>Kota tujuan<input name="destination" required placeholder="Contoh: Bandung"></label></div>
+    <div class="form-row"><label>Tanggal perjalanan<input name="travel_date" type="date" required></label><label>Harga sewa (Rp)<input name="rental_amount" type="number" min="0" step="1" required placeholder="0"></label></div>
+    <label>Komisi driver (%)<div class="input-suffix"><input name="commission_rate" type="number" min="0" max="100" step="0.01" value="10" required><span>%</span></div><small class="field-help">Default 10%; perubahan hanya untuk perjalanan ini.</small></label>
+    <label>Catatan (opsional)<textarea name="notes" rows="2" placeholder="Informasi tambahan perjalanan"></textarea></label>
+    <div class="modal-actions"><button type="button" class="button button-quiet" data-close>Batal</button><button class="button button-primary" type="submit">Simpan perjalanan</button></div>
+  </form></dialog>
+
+  <dialog class="modal" id="transaction-modal"><form class="modal-card" id="transaction-form"><input type="hidden" name="id">
+    <div class="modal-heading"><div><div class="eyebrow">PENGELOLAAN KEUANGAN</div><h2>Catat aktivitas</h2></div><button type="button" class="close-button" data-close aria-label="Tutup">×</button></div>
+    <label>Jenis aktivitas<select name="type" id="transaction-type" required><option value="customer_payment">Pembayaran pelanggan (DP / pelunasan)</option><option value="driver_advance">Uang jalan driver</option><option value="operating_expense">Biaya operasional perjalanan</option><option value="advance_return">Pengembalian sisa uang jalan</option><option value="driver_reimbursement">Penggantian kekurangan biaya ke driver</option></select></label>
+    <label>Perjalanan<select name="trip_id" id="transaction-trip" required></select></label>
+    <div class="field-group hidden" id="payment-stage-wrap"><label for="payment-stage">Jenis pembayaran pelanggan</label><select name="payment_stage" id="payment-stage"><option value="dp">DP</option><option value="full">Lunas (isi sisa tagihan)</option></select><small class="field-help" id="payment-balance-help"></small></div>
+    <div id="transaction-person-wrap"><label id="transaction-person-label">Pelanggan<select name="person_id" id="transaction-person"></select></label></div>
+    <div class="form-row"><label>Jumlah (Rp)<input name="amount" type="number" min="1" step="1" required placeholder="0"></label><label>Metode<select name="channel" required><option value="cash">Kas tunai</option><option value="bank">Rekening bank</option></select></label></div>
+    <div class="form-row" id="expense-fields"><label>Kategori biaya<select name="category"><option value="fuel">Bensin</option><option value="toll">Tol</option><option value="parking">Parkir</option><option value="meal">Makan</option><option value="other">Lainnya</option></select></label><label>Status awal<select name="status"><option value="pending">Menunggu validasi admin</option><option value="validated">Sudah divalidasi</option></select></label></div>
+    <label>Catatan / nomor bukti (opsional)<textarea name="notes" rows="2" placeholder="Keterangan transaksi atau referensi bukti"></textarea></label>
+    <div class="modal-actions"><button type="button" class="button button-quiet" data-close>Batal</button><button class="button button-primary" type="submit">Simpan aktivitas</button></div>
+  </form></dialog>
+
+  <dialog class="modal" id="contact-modal"><form class="modal-card" id="contact-form"><input type="hidden" name="id">
+    <div class="modal-heading"><div><div class="eyebrow">DATA MASTER</div><h2>Tambah kontak</h2></div><button type="button" class="close-button" data-close aria-label="Tutup">×</button></div>
+    <label>Jenis kontak<select name="kind" id="contact-kind"><option value="customer">Pelanggan</option><option value="driver">Driver</option></select></label>
+    <label>Nama lengkap<input name="name" required placeholder="Nama pelanggan atau driver"></label><label>Nomor telepon<input name="phone" type="tel" placeholder="08xxxxxxxxxx"></label><label>Alamat / catatan<input name="address" placeholder="Opsional"></label>
+    <div class="modal-actions"><button type="button" class="button button-quiet" data-close>Batal</button><button class="button button-primary" type="submit">Simpan kontak</button></div>
+  </form></dialog>
+
+  <dialog class="modal" id="settlement-modal"><form class="modal-card" id="settlement-form">
+    <div class="modal-heading"><div><div class="eyebrow">PENYELESAIAN DRIVER</div><h2 id="settlement-title">Komisi & uang jalan</h2></div><button type="button" class="close-button" data-close aria-label="Tutup">×</button></div>
+    <p class="settlement-copy" id="settlement-description"></p><label>Kanal penyelesaian<select name="channel" required><option value="cash">Kas tunai</option><option value="bank">Rekening bank</option></select></label>
+    <div class="settlement-breakdown" id="settlement-breakdown"></div><input type="hidden" name="trip_id">
+    <div class="modal-actions"><button type="button" class="button button-quiet" data-close>Batal</button><button class="button button-primary" type="submit">Validasi & selesaikan</button></div>
+  </form></dialog>
+</body>
+</html>
