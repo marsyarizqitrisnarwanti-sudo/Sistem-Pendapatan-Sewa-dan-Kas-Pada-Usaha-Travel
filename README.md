@@ -2,6 +2,8 @@
 
 Web app Shabil Trans untuk mengelola pelanggan, driver, perjalanan, penerimaan pelanggan, uang jalan, bukti biaya operasional, dan penyelesaian bersih komisi driver. Aplikasi memakai empat tabel inti Supabase: `customers`, `drivers`, `trips`, dan `cash_transactions`.
 
+Demo Web: https://marsyarizqitrisnarwanti-sudo.github.io/Sistem-Pendapatan-Sewa-dan-Kas-Pada-Travel/
+
 ## Menjalankan
 
 1. Buat proyek Supabase, lalu jalankan isi [backend/schema.sql](backend/schema.sql) melalui SQL Editor.
